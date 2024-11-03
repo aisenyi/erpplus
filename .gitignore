@@ -5,3 +5,10 @@
 tags
 erpplus/docs/current
 node_modules/
+.vscode
+.vs
+node_modules
+.kdev4/
+*.kdev4
+*debug.log
+erpplus/public/dist
