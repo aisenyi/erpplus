@@ -94,7 +94,9 @@ def item_query(doctype, txt, searchfield, start, page_len, filters, as_dict=Fals
 
 	return frappe.db.sql(
 		"""select
-			tabItem.name {columns}
+			tabItem.name, 
+			if(length(tabItem.description) > 40, 
+			concat(substr(tabItem.description, 1, 40), "..."), description) as description
 		from tabItem
 		where tabItem.docstatus < 2
 			and tabItem.disabled=0
