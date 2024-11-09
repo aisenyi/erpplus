@@ -92,11 +92,17 @@ def item_query(doctype, txt, searchfield, start, page_len, filters, as_dict=Fals
 		}
 	allparams.update(wordparams)
 
+	if filters.get("is_advance", False):
+		desc_limit = 140
+	else:
+		desc_limit = 40
+	filters.pop("is_advance", None)
+
 	return frappe.db.sql(
 		"""select
 			tabItem.name, 
-			if(length(tabItem.description) > 40, 
-			concat(substr(tabItem.description, 1, 40), "..."), description) as description
+			if(length(tabItem.description) > {desc_limit}, 
+			concat(substr(tabItem.description, 1, {desc_limit}), "..."), description) as description
 		from tabItem
 		where tabItem.docstatus < 2
 			and tabItem.disabled=0
@@ -116,6 +122,7 @@ def item_query(doctype, txt, searchfield, start, page_len, filters, as_dict=Fals
 			fcond=get_filters_cond(doctype, filters, conditions).replace("%", "%%"),
 			mcond=get_match_cond(doctype).replace("%", "%%"),
 			description_cond=description_cond,
+			desc_limit=desc_limit,
 		),
 		allparams,
 		as_dict=as_dict,

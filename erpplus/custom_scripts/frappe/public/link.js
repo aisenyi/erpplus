@@ -86,10 +86,11 @@ frappe.ui.form.ControlLink = class ControlLink extends frappe.ui.form.ControlLin
 				};
 
 				me.set_custom_query(args);
-
+				
 				// Customization: Change the item search query to our custom one
 				if(args.query && args.query == "erpnext.controllers.queries.item_query") {
 					args.query = "erpplus.custom_scripts.queries.item_query";
+					args.filters.is_advance = false;
 				}
 
 				frappe.call({
